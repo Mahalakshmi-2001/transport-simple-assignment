@@ -1,0 +1,26 @@
+
+{% block content %}
+<h2>{{ question.title }}</h2>
+<p>{{ question.description }}</p>
+<p><small>Asked by {{ question.user.username }} on {{ question.created_at }}</small></p>
+
+<h3>Answers:</h3>
+<ul>
+    {% for answer in question.answers.all %}
+        <li>
+            <p>{{ answer.content }}</p>
+            <small>By {{ answer.user.username }} | {{ answer.created_at }}</small><br>
+            <a href="{% url 'like_answer' answer.id %}">Like</a> ({{ answer.likes.count }})
+        </li>
+    {% empty %}
+        <li>No answers yet.</li>
+    {% endfor %}
+</ul>
+
+<h3>Your Answer:</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit Answer</button>
+</form>
+{% endblock %}
